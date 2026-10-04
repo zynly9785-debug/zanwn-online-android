@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.webkit.JavascriptInterface
 import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -67,7 +68,7 @@ class AndroidBridge(private val context: Context, private val repository: ZanwnR
     @JavascriptInterface fun authenticateBiometric() {
         val activity = context as? FragmentActivity ?: return
         activity.runOnUiThread { runCatching {
-            val prompt = BiometricPrompt(activity, activity.mainExecutor, object : BiometricPrompt.AuthenticationCallback() {})
+            val prompt = BiometricPrompt(activity, ContextCompat.getMainExecutor(activity), object : BiometricPrompt.AuthenticationCallback() {})
             val info = BiometricPrompt.PromptInfo.Builder().setTitle("تسجيل الدخول إلى زين أونلاين").setSubtitle("استخدم البصمة للمتابعة").setNegativeButtonText("إلغاء").build()
             prompt.authenticate(info)
         } }

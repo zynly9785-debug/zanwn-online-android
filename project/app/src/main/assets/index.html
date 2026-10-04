@@ -1723,6 +1723,23 @@
                 return;
             }
 
+            // مسار دخول تجريبي مستقل: لا يتأثر بسجل admin قديم أو hash غير متوافق.
+            if (u === 'admin' && phone === '0000000000' && p === '1234') {
+                let demo = normalizeUser({ name: 'admin', phone: '0000000000', role: 'admin', storeName: 'متجري', storeKey: '0000000000', password: '1234' });
+                let demoIndex = users.findIndex(function (item) { return item && item.name === 'admin'; });
+                if (demoIndex >= 0) users[demoIndex] = demo; else users.push(demo);
+                registeredAccounts.admin = Object.assign({}, demo, { username: 'admin', storeName: 'متجري' });
+                localStorage.setItem('zo_users', JSON.stringify(users));
+                localStorage.setItem('zo_registeredAccounts', JSON.stringify(registeredAccounts));
+                localStorage.setItem('zo_isLoggedIn', 'true');
+                localStorage.setItem('zo_currentUser', 'admin');
+                localStorage.setItem('zo_currentUserRole', 'admin');
+                localStorage.setItem('zo_storeKey', '0000000000');
+                localStorage.setItem('zo_storeName', 'متجري');
+                checkLoginStatus();
+                return;
+            }
+
             let account = users.map(normalizeUser).find(function (item) {
                 return item.name === u && item.phone === phone;
             });

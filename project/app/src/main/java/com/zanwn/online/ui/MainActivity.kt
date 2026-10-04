@@ -11,6 +11,7 @@ import android.text.InputType
 import android.widget.EditText
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import androidx.appcompat.app.AppCompatActivity
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         if (lockInProgress) return
         lockInProgress = true
         runOnUiThread {
-            val prompt = BiometricPrompt(this, mainExecutor, object : BiometricPrompt.AuthenticationCallback() {
+            val prompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this), object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) { lockInProgress = false; unlockApp() }
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) { lockInProgress = false; showPasscodeFallback() }
             })
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
     private fun authenticateDeviceCredential() {
         lockInProgress = true
-        val prompt = BiometricPrompt(this, mainExecutor, object : BiometricPrompt.AuthenticationCallback() {
+        val prompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this), object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) { lockInProgress = false; unlockApp() }
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) { lockInProgress = false; showPasscodeFallback() }
         })
