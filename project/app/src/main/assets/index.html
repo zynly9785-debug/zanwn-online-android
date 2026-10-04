@@ -1186,7 +1186,6 @@
             if (window.Android && typeof Android.setPin === 'function') Android.setPin(passcode);
             document.getElementById('googleProfileSetupModal').style.display = 'none';
             checkLoginStatus();
-            if (window.Android && typeof Android.authenticateAppLock === 'function') Android.authenticateAppLock();
             saveData();
         }
 
@@ -1627,7 +1626,8 @@
             }
 
             document.querySelectorAll('.login-tabs button').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            var activeTab = document.querySelector('.login-tabs button[onclick*="' + tab + '"]');
+            if (activeTab) activeTab.classList.add('active');
         }
 
         function selectUserRole(btn, role) {
@@ -1752,7 +1752,6 @@
                     localStorage.setItem('zo_storeName', account.storeName);
                 }
                 checkLoginStatus();
-                if (window.Android && typeof Android.authenticateAppLock === 'function') Android.authenticateAppLock();
             } else { 
                 alert('بيانات الدخول غير صحيحة أو أن المستخدم غير مسجل من المدير.'); 
             }
